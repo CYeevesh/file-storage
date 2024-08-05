@@ -1,5 +1,5 @@
 // Your contract ABI and address
-const contractABI = [[
+const contractABI = [
     {
         "anonymous": false,
         "inputs": [
@@ -223,7 +223,6 @@ const contractABI = [[
         "stateMutability": "view",
         "type": "function"
     }
-]
 ];
 
 const contractAddress = '0x6f292acB6b4803E40f9f9d6A78EfAE84e9A2f367';
@@ -240,6 +239,7 @@ async function connectWeb3() {
             await window.ethereum.request({ method: 'eth_requestAccounts' });
             account = (await web3.eth.getAccounts())[0];
             contract = new web3.eth.Contract(contractABI, contractAddress);
+            console.log('Contract initialized:', contract);
         } catch (error) {
             console.error('User denied account access or there is an error', error);
             alert('Please connect your MetaMask wallet.');
@@ -271,7 +271,7 @@ async function uploadFile() {
         const result = await fetch('https://api.pinata.cloud/pinning/pinFileToIPFS', {
             method: 'POST',
             headers: {
-                'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiIyYjdjM2Q2YS1hYWQ1LTRhZmYtODEzNi1hZTA5OGRlNGFjMjAiLCJlbWFpbCI6InllY293bGVzc3VyQHVtYWlsLnV0bS5hYy5tdSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJwaW5fcG9saWN5Ijp7InJlZ2lvbnMiOlt7ImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxLCJpZCI6IkZSQTEifSx7ImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxLCJpZCI6Ik5ZQzEifV0sInZlcnNpb24iOjF9LCJtZmFfZW5hYmxlZCI6ZmFsc2UsInN0YXR1cyI6IkFDVElWRSJ9LCJhdXRoZW50aWNhdGlvblR5cGUiOiJzY29wZWRLZXkiLCJzY29wZWRLZXlLZXkiOiIwMWJmMGUyMTRmOGQ4ZDQyMGQ1ZCIsInNjb3BlZEtleVNlY3JldCI6IjVjOTBmZmVlY2ViYTFmNDNjMDI5NGIxYWY1MzI5ODIyMDQxYTcwMDQ5MjlmMzRjNjM0N2M0Y2RlNzZmY2MxODciLCJleHAiOjE3NTQ0MTc1Mzd9._3W5qQY_ocOSDEB9-Ax8vOems_-LEKnaqCtQNorsZwE`, // Replace with your Pinata JWT token
+                'Authorization': `Bearer YOUR_PINATA_JWT_TOKEN`, // Replace with your Pinata JWT token
             },
             body: formData
         });
@@ -282,8 +282,14 @@ async function uploadFile() {
 
         // Store the IPFS hash in the smart contract
         status.textContent = 'Storing IPFS hash in the smart contract...';
-        await contract.methods.uploadFile(ipfsHash, encryptedKey).send({ from: account });
-        status.textContent = 'IPFS hash stored successfully on the blockchain!';
+
+        if (contract.methods.uploadFile) {
+            await contract.methods.uploadFile(ipfsHash, encryptedKey).send({ from: account });
+            status.textContent = 'IPFS hash stored successfully on the blockchain!';
+        } else {
+            console.error('uploadFile method not found in contract');
+            status.textContent = 'uploadFile method not found in contract';
+        }
     } catch (error) {
         console.error(error);
         status.textContent = 'An error occurred. Check console for details.';
