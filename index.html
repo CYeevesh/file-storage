@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Decentralized File Storage</title>
+    </head>
+    <body>
+        <h1>Decentralized File Storage</h1>
+        <p>Select a file to upload to IPFS:</p>
+        <input type="file" id="fileInput">
+        <br><br>
+        <input type="text" id="encryptedKey" placeholder="Enter your encrypted key">
+        <br><br>
+        <button id="uploadButton">Upload File and Store Hash</button>
+
+        <p id="status"></p>
+
+        <!-- Web3.js and IPFS client library -->
+        <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/ipfs-http-client@58.0.0/dist/index.min.js"></script>
+        <script src="app.js"></script>
+    </body>
+</html>
