@@ -238,10 +238,20 @@ async function connectWeb3() {
         try {
             await window.ethereum.request({ method: 'eth_requestAccounts' });
             account = (await web3.eth.getAccounts())[0];
-            contract = new web3.eth.Contract(contractABI, contractAddress);
-            console.log('Contract initialized:', contract);
+
+            // Log the network ID
+            const networkId = await web3.eth.net.getId();
+            console.log('Connected Network ID:', networkId);
+
+            if (networkId === 11155111) { // Check if the network ID is Sepolia
+                console.log('Connected to Sepolia Testnet');
+                contract = new web3.eth.Contract(contractABI, contractAddress);
+                console.log('Contract initialized:', contract);
+            } else {
+                alert('Please connect to the Sepolia Testnet');
+            }
         } catch (error) {
-            console.error('User denied account access or there is an error', error);
+            console.error('User denied account access or there is an error:', error);
             alert('Please connect your MetaMask wallet.');
         }
     } else {
