@@ -254,6 +254,7 @@ async function uploadFile() {
     const fileInput = document.getElementById('fileInput');
     const encryptedKey = document.getElementById('encryptedKey').value;
     const status = document.getElementById('status');
+    const jwtToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiIyYjdjM2Q2YS1hYWQ1LTRhZmYtODEzNi1hZTA5OGRlNGFjMjAiLCJlbWFpbCI6InllY293bGVzc3VyQHVtYWlsLnV0bS5hYy5tdSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJwaW5fcG9saWN5Ijp7InJlZ2lvbnMiOlt7ImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxLCJpZCI6IkZSQTEifSx7ImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxLCJpZCI6Ik5ZQzEifV0sInZlcnNpb24iOjF9LCJtZmFfZW5hYmxlZCI6ZmFsc2UsInN0YXR1cyI6IkFDVElWRSJ9LCJhdXRoZW50aWNhdGlvblR5cGUiOiJzY29wZWRLZXkiLCJzY29wZWRLZXlLZXkiOiIwMWJmMGUyMTRmOGQ4ZDQyMGQ1ZCIsInNjb3BlZEtleVNlY3JldCI6IjVjOTBmZmVlY2ViYTFmNDNjMDI5NGIxYWY1MzI5ODIyMDQxYTcwMDQ5MjlmMzRjNjM0N2M0Y2RlNzZmY2MxODciLCJleHAiOjE3NTQ0MTc1Mzd9._3W5qQY_ocOSDEB9-Ax8vOems_-LEKnaqCtQNorsZwE';
 
     if (fileInput.files.length === 0) {
         status.textContent = 'Please select a file.';
@@ -271,7 +272,7 @@ async function uploadFile() {
         const result = await fetch('https://api.pinata.cloud/pinning/pinFileToIPFS', {
             method: 'POST',
             headers: {
-                'Authorization': `Bearer YOUR_PINATA_JWT_TOKEN`, // Replace with your Pinata JWT token
+                'Authorization': `Bearer ${jwtToken}`, // Replace with your Pinata JWT token
             },
             body: formData
         });
