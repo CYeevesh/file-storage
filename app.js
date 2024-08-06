@@ -239,12 +239,12 @@ async function connectWeb3() {
             await window.ethereum.request({ method: 'eth_requestAccounts' });
             account = (await web3.eth.getAccounts())[0];
 
-            // Fetch the network ID and log it
+            // Fetch the network ID
             const networkId = await web3.eth.net.getId();
             console.log('Raw Network ID:', networkId);
-
-            // Parse and log the network ID as an integer
-            const parsedNetworkId = parseInt(networkId, 10);
+            
+            // Ensure it's treated as a number
+            const parsedNetworkId = Number(networkId);
             console.log('Parsed Network ID:', parsedNetworkId);
 
             if (parsedNetworkId === 11155111) { // Check if the network ID is Sepolia
