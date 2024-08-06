@@ -239,11 +239,15 @@ async function connectWeb3() {
             await window.ethereum.request({ method: 'eth_requestAccounts' });
             account = (await web3.eth.getAccounts())[0];
 
-            // Log the network ID
+            // Fetch the network ID and log it
             const networkId = await web3.eth.net.getId();
-            console.log('Connected Network ID:', networkId);
+            console.log('Raw Network ID:', networkId);
 
-            if (networkId === 11155111) { // Check if the network ID is Sepolia
+            // Parse and log the network ID as an integer
+            const parsedNetworkId = parseInt(networkId, 10);
+            console.log('Parsed Network ID:', parsedNetworkId);
+
+            if (parsedNetworkId === 11155111) { // Check if the network ID is Sepolia
                 console.log('Connected to Sepolia Testnet');
                 contract = new web3.eth.Contract(contractABI, contractAddress);
                 console.log('Contract initialized:', contract);
