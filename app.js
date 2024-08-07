@@ -484,26 +484,26 @@ async function grantPermission() {
 async function revokePermission() {
     const fileIndex = document.getElementById('revokeFileIndex').value;
     const userAddress = document.getElementById('revokeUserAddress').value;
-    const revokePermissionStatus = document.getElementById('revokePermissionStatus');
+    const permissionStatus = document.getElementById('revokePermissionStatus');
 
     if (!fileIndex || !userAddress) {
-        revokePermissionStatus.textContent = 'Please provide both file index and user address.';
+        permissionStatus.textContent = 'Please provide both file index and user address.';
         return;
     }
 
     try {
-        revokePermissionStatus.textContent = 'Revoking permission...';
+        permissionStatus.textContent = 'Revoking permission...';
 
         if (contract.methods.revokePermission) {
             await contract.methods.revokePermission(fileIndex, userAddress).send({ from: account });
-            revokePermissionStatus.textContent = 'Permission revoked successfully!';
+            permissionStatus.textContent = 'Permission revoked successfully!';
         } else {
             console.error('revokePermission method not found in contract');
-            revokePermissionStatus.textContent = 'revokePermission method not found in contract';
+            permissionStatus.textContent = 'revokePermission method not found in contract';
         }
     } catch (error) {
         console.error(error);
-        revokePermissionStatus.textContent = 'An error occurred. Check console for details.';
+        permissionStatus.textContent = 'An error occurred. Check console for details.';
     }
 }
 
