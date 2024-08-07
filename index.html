@@ -12,52 +12,55 @@
     <button id="connectButton">Connect MetaMask</button>
     <p id="status"></p>
 
-    <h2>Upload File</h2>
-    <input type="file" id="fileInput">
-    <input type="text" id="encryptedKey" placeholder="Enter encrypted key">
-    <button id="uploadButton">Upload File</button>
-
-    <h2>Grant Permission</h2>
-    <input type="number" id="grantFileIndex" placeholder="File Index">
-    <input type="text" id="grantUserAddress" placeholder="User Address">
-    <button id="grantPermissionButton">Grant Permission</button>
-    <p id="grantPermissionStatus"></p>
-
-    <h2>Revoke Permission</h2>
-    <label for="revokeFileIndex">File Index:</label>
-    <input type="number" id="revokeFileIndex" required><br><br>
-    <label for="revokeUserAddress">User Address:</label>
-    <input type="text" id="revokeUserAddress" required><br><br>
-    <button id="revokePermissionButton">Revoke Permission</button>
-    <p id="revokePermissionStatus"></p>
-
-    <h2>Your Uploaded Files</h2>
-    <table id="filesTable" border="1">
-        <thead>
-            <tr>
-                <th>Index</th>
-                <th>IPFS Hash</th>
-                <th>Encrypted Key</th>
-            </tr>
-        </thead>
-        <tbody>
-        </tbody>
-    </table>
-
-    <h2>Users with Shared Files</h2>
-    <table id="usersSharedFilesTable" border="1">
-        <thead>
-            <tr>
-                <th>Index</th>
-                <th>Hash</th>
-                <th>Owner</th>
-                <th>Shared With</th>
-                <th>Encrypted Key</th>
-            </tr>
-        </thead>
-        <tbody>
-        </tbody>
-    </table>
-    
+    <div>
+        <h2>Upload File</h2>
+        <input type="file" id="fileInput">
+        <input type="text" id="encryptedKey" placeholder="Enter encrypted key">
+        <button id="uploadButton">Upload File</button>
+    </div>
+    <div>
+        <h2>Grant Permission</h2>
+        <input type="number" id="grantFileIndex" placeholder="File Index">
+        <input type="text" id="grantUserAddress" placeholder="User Address">
+        <button id="grantPermissionButton">Grant Permission</button>
+        <p id="grantPermissionStatus"></p>
+    </div>
+    <div>
+        <h2>Revoke Permission</h2>
+        <input type="number" id="revokeFileIndex" placeholder="File Index" required>
+        <input type="text" id="revokeUserAddress" placeholder="User Address" required>
+        <button id="revokePermissionButton">Revoke Permission</button>
+        <p id="revokePermissionStatus"></p>
+    </div>
+    <div>
+        <h2>Your Uploaded Files</h2>
+        <table id="filesTable" border="1">
+            <thead>
+                <tr>
+                    <th>Index</th>
+                    <th>IPFS Hash</th>
+                    <th>Encrypted Key</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    <div>
+        <h2>Users with Shared Files</h2>
+        <table id="usersSharedFilesTable" border="1">
+            <thead>
+                <tr>
+                    <th>Index</th>
+                    <th>Hash</th>
+                    <th>Owner</th>
+                    <th>Shared With</th>
+                    <th>Encrypted Key</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
 </body>
 </html>
