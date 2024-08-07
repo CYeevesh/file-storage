@@ -296,7 +296,7 @@
 	}
 ];
 
-        const contractAddress = '0x9326A57a0291A6340Af14D9d997B952F1e209b4D';
+        const contractAddress = '0xA5Eb7c61aD1c6140886eb106C68034DB28907123';
 
         
 // Web3 setup
