@@ -324,7 +324,7 @@ async function connectWeb3() {
                 // Fetch and display uploaded files
                 console.log('Fetching uploaded files...');
                 await fetchUploadedFiles();
-		// Fetch and display shared files
+                // Fetch and display shared files
                 console.log('Fetching all files shared...');
                 await fetchSharedFiles();
             }
@@ -342,7 +342,7 @@ async function uploadFile() {
     const fileInput = document.getElementById('fileInput');
     const encryptedKey = document.getElementById('encryptedKey').value;
     const status = document.getElementById('status');
-    const jwtToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiIyYjdjM2Q2YS1hYWQ1LTRhZmYtODEzNi1hZTA5OGRlNGFjMjAiLCJlbWFpbCI6InllY293bGVzc3VyQHVtYWlsLnV0bS5hYy5tdSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJwaW5fcG9saWN5Ijp7InJlZ2lvbnMiOlt7ImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxLCJpZCI6IkZSQTEifSx7ImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxLCJpZCI6Ik5ZQzEifV0sInZlcnNpb24iOjF9LCJtZmFfZW5hYmxlZCI6ZmFsc2UsInN0YXR1cyI6IkFDVElWRSJ9LCJhdXRoZW50aWNhdGlvblR5cGUiOiJzY29wZWRLZXkiLCJzY29wZWRLZXlLZXkiOiIxMWY5YzlkOTg3NmJlNDVjNDQzNiIsInNjb3BlZEtleVNlY3JldCI6IjA0ZjY1ZWMyNDc3NTdiZjA3NjIzNzk1OGMyN2QxOTQ4NmNmOGJmZWFjN2Y0OWJmYzQ4ZTkwNDk1YmExMDcyNzMiLCJleHAiOjE3NTQ0NTkxMzR9.D9CCodBH7YBGRCh_DOJHQQM8y8wrqKYyMpUi2BwTaLY'; // Replace with your Pinata JWT token
+    const jwtToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiIyYjdjM2Q2YS1hYWQ1LTRhZmYtODEzNi1hZTA5OGRlNGFjMjAiLCJlbWFpbCI6InllY293bGVzc3VyQHVtYWlsLnV0bS5hYy5tdSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJwaW5fcG9saWN5Ijp7InJlZ2lvbnMiOlt7ImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxLCJpZCI6IkZSQTEifSx7ImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxLCJpZCI6Ik5ZQzEifV0sInZlcnNpb24iOjF9LCJtZmFfZW5hYmxlZCI6ZmFsc2UsInN0YXR1cyI6IkFDVElWRSJ9LCJhdXRoZW50aWNhdGlvblR5cGUiOiJzY29wZWRLZXkiLCJzY29wZWRLZXlLZXkiOiIxMWY5YzlkOTg3NmJlNDVjNDQzNiIsInNjb3BlZEtleVNlY3JldCI6IjA0ZjY1ZWMyNDc3NTdiZjA3NjIzNzk1OGMyN2QxOTQ4NmNmOGJmZWFjN2Y0OWJmYzQ4ZTkwNDk1YmExMDcyNzMiLCJleHAiOjE3NTQ0NTkxMzR9.D9CCodBH7YBGRCh_DOJHQQM8y8wrqKYyMpUi2BwTaLY';
 
     if (fileInput.files.length === 0) {
         status.textContent = 'Please select a file.';
@@ -360,7 +360,7 @@ async function uploadFile() {
         const result = await fetch('https://api.pinata.cloud/pinning/pinFileToIPFS', {
             method: 'POST',
             headers: {
-                'Authorization': `Bearer ${jwtToken}`, 
+                'Authorization': `Bearer ${jwtToken}`,
             },
             body: formData
         });
@@ -421,25 +421,32 @@ async function fetchUploadedFiles() {
 
 // Fetch and display shared files
 async function fetchSharedFiles() {
-    try {
-        const files = await contract.methods.getAllSharedFiles(account).call();
-        const sharedFilesTable = document.getElementById('usersSharedFilesTable').getElementsByTagName('tbody')[0];
+    const sharedFilesTableBody = document.getElementById('usersSharedFilesTable').getElementsByTagName('tbody')[0];
+    sharedFilesTableBody.innerHTML = ''; // Clear previous entries
 
-        sharedFilesTable.innerHTML = '';
+    try {
+        console.log('Calling getAllSharedFiles with account:', account);
+        const files = await contract.methods.getAllSharedFiles(account).call();
+        console.log('Fetched shared files:', files);
+
+        if (files.length === 0) {
+            console.log('No shared files found for this user.');
+        }
 
         files.forEach((file, index) => {
-            const row = sharedFilesTable.insertRow();
-            const indexCell = row.insertCell(0);
-            const hashCell = row.insertCell(1);
-            const ownerCell = row.insertCell(2);
-            const sharedWithCell = row.insertCell(3);
-            const encryptedKeyCell = row.insertCell(4);
+            const row = sharedFilesTableBody.insertRow();
 
-            indexCell.textContent = index + 1;
-            hashCell.textContent = file.hash;
-            ownerCell.textContent = file.owner;
-            sharedWithCell.textContent = file.sharedWith;
-            encryptedKeyCell.textContent = file.encryptedKey;
+            const cellIndex = row.insertCell(0);
+            const cellHash = row.insertCell(1);
+            const cellOwner = row.insertCell(2);
+            const cellSharedWith = row.insertCell(3);
+            const cellKey = row.insertCell(4);
+
+            cellIndex.textContent = index + 1;
+            cellHash.textContent = file.hash;
+            cellOwner.textContent = file.owner;
+            cellSharedWith.textContent = file.sharedWith;
+            cellKey.textContent = file.encryptedKey;
         });
     } catch (error) {
         console.error('Error fetching shared files:', error);
