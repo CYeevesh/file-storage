@@ -3,6 +3,13 @@ body {
     font-family: Arial, sans-serif;
 }
 
+td {
+    max-width: 400px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
 .uk-navbar-container {
     background-color: #051463 !important;
 }
