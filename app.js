@@ -327,9 +327,9 @@ async function connectWeb3() {
                 // Fetch and display shared files
                 console.log('Fetching all files shared to user...');
                 await fetchSharedFiles();
-		// Fetch and display shared files
+                // Fetch and display shared files by user
                 console.log('Fetching all files shared by user...');
-		await sharedFilesList();
+                await sharedFilesList();
             }
         } catch (error) {
             console.error('User denied account access or there is an error', error);
@@ -489,7 +489,6 @@ async function sharedFilesList() {
         console.error('Error fetching shared files:', error);
     }
 }
-
 
 // Grant permission to another user to access a file
 async function grantPermission() {
