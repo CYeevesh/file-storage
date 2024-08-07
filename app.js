@@ -508,6 +508,7 @@ async function grantPermission() {
         if (contract.methods.grantPermission) {
             await contract.methods.grantPermission(fileIndex, userAddress).send({ from: account });
             grantPermissionStatus.textContent = 'Permission granted successfully!';
+	    await sharedFilesList();
         } else {
             console.error('grantPermission method not found in contract');
             grantPermissionStatus.textContent = 'grantPermission method not found in contract';
@@ -535,6 +536,7 @@ async function revokePermission() {
         if (contract.methods.revokePermission) {
             await contract.methods.revokePermission(fileIndex, userAddress).send({ from: account });
             permissionStatus.textContent = 'Permission revoked successfully!';
+	    await sharedFilesList();
         } else {
             console.error('revokePermission method not found in contract');
             permissionStatus.textContent = 'revokePermission method not found in contract';
