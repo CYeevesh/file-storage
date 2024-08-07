@@ -424,37 +424,65 @@ async function fetchUploadedFiles() {
 
 // Fetch and display files shared to user
 async function fetchSharedFiles() {
-    const sharedFilesTableBody = document.getElementById('usersSharedFilesTable').getElementsByTagName('tbody')[0];
-    sharedFilesTableBody.innerHTML = ''; // Clear previous entries
+            const sharedFilesTableBody = document.getElementById('usersSharedFilesTable').getElementsByTagName('tbody')[0];
+            sharedFilesTableBody.innerHTML = ''; // Clear previous entries
 
-    try {
-        console.log('Calling getAllSharedFiles with account:', account);
-        const files = await contract.methods.getAllSharedFiles(account).call();
-        console.log('Fetched shared files:', files);
+            try {
+                console.log('Calling getAllSharedFiles with account:', account);
+                const files = await contract.methods.getAllSharedFiles(account).call();
+                console.log('Fetched shared files:', files);
 
-        if (files.length === 0) {
-            console.log('No shared files found for this user.');
+                if (files.length === 0) {
+                    console.log('No shared files found for this user.');
+                }
+
+                files.forEach((file, index) => {
+                    const row = sharedFilesTableBody.insertRow();
+
+                    const cellIndex = row.insertCell(0);
+                    const cellHash = row.insertCell(1);
+                    const cellOwner = row.insertCell(2);
+                    const cellSharedWith = row.insertCell(3);
+                    const cellKey = row.insertCell(4);
+                    const cellAction = row.insertCell(5);
+
+                    cellIndex.textContent = index + 1;
+                    cellHash.textContent = file.hash;
+                    cellOwner.textContent = file.owner;
+                    cellSharedWith.textContent = file.sharedWith;
+                    cellKey.textContent = file.encryptedKey;
+
+                    const downloadButton = document.createElement('button');
+                    downloadButton.textContent = 'Download';
+                    downloadButton.onclick = () => downloadFileFromIPFS(file.hash);
+                    cellAction.appendChild(downloadButton);
+                });
+            } catch (error) {
+                console.error('Error fetching shared files:', error);
+            }
         }
 
-        files.forEach((file, index) => {
-            const row = sharedFilesTableBody.insertRow();
+        async function downloadFileFromIPFS(cid) {
+            try {
+                const response = await fetch(`https://gateway.pinata.cloud/ipfs/${cid}`);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
 
-            const cellIndex = row.insertCell(0);
-            const cellHash = row.insertCell(1);
-            const cellOwner = row.insertCell(2);
-            const cellSharedWith = row.insertCell(3);
-            const cellKey = row.insertCell(4);
-
-            cellIndex.textContent = index + 1;
-            cellHash.textContent = file.hash;
-            cellOwner.textContent = file.owner;
-            cellSharedWith.textContent = file.sharedWith;
-            cellKey.textContent = file.encryptedKey;
-        });
-    } catch (error) {
-        console.error('Error fetching shared files:', error);
-    }
-}
+                const blob = await response.blob();
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url;
+                a.download = cid; // You can provide a specific filename here
+                document.body.appendChild(a);
+                a.click();
+                URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+            } catch (error) {
+                console.error('Error downloading file from IPFS:', error);
+            }
+        }
 
 // Fetch and display files shared by user
 async function sharedFilesList() {
