@@ -1,24 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Decentralized File Storage</title>
-    </head>
-    <body>
-        <h1>Decentralized File Storage</h1>
-        <p>Select a file to upload to IPFS:</p>
-        <input type="file" id="fileInput">
-        <br><br>
-        <input type="text" id="encryptedKey" placeholder="Enter your encrypted key">
-        <br><br>
-        <button id="uploadButton">Upload File and Store Hash</button>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Decentralized File Storage</title>
+    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+    <script src="app.js"></script>
+</head>
+<body>
+    <h1>Decentralized File Storage</h1>
+    <button id="connectButton">Connect MetaMask</button>
+    <p id="status"></p>
 
-        <p id="status"></p>
+    <h2>Upload File</h2>
+    <input type="file" id="fileInput">
+    <input type="text" id="encryptedKey" placeholder="Enter encrypted key">
+    <button id="uploadButton">Upload File</button>
 
-        <!-- Web3.js and IPFS client library -->
-        <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/ipfs-http-client@58.0.0/dist/index.min.js"></script>
-        <script src="app.js"></script>
-    </body>
+    <h2>Grant Permission</h2>
+    <input type="number" id="fileIndex" placeholder="File Index">
+    <input type="text" id="userAddress" placeholder="User Address">
+    <button id="grantPermissionButton">Grant Permission</button>
+    <p id="permissionStatus"></p>
+
+    <h2>Your Uploaded Files</h2>
+    <table id="filesTable" border="1">
+        <thead>
+            <tr>
+                <th>Index</th>
+                <th>IPFS Hash</th>
+                <th>Encrypted Key</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</body>
 </html>
