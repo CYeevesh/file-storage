@@ -321,6 +321,7 @@ async function connectWeb3() {
                 alert('Please connect to the Sepolia Testnet');
                 console.log('Currently connected to Network ID:', networkId);
             } else {
+		alert('Metamask wallet connected.');
                 // Fetch and display uploaded files
                 console.log('Fetching uploaded files...');
                 await fetchUploadedFiles();
