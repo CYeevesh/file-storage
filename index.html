@@ -1,83 +1,217 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Decentralized File Storage</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.15.11/css/uikit.min.css" />
+    <link rel="stylesheet" href="styles.css" />
     <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.15.11/js/uikit.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.15.11/js/uikit-icons.min.js"></script>
     <script src="app.js"></script>
-</head>
-<body>
-    <h1>Decentralized File Storage</h1>
-    <button id="connectButton">Connect MetaMask</button>
-    <p id="status"></p>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="uk-navbar-container uk-padding-small" uk-navbar>
+      <div class="uk-navbar-left">
+        <a href="#" class="uk-navbar-item uk-logo"
+          >Decentralized File Storage</a
+        >
+      </div>
+      <div class="uk-navbar-right">
+        <button
+          id="connectButton"
+          class="uk-button uk-button-primary uk-button-large uk-text-bold uk-text-capitalize">
+          Connect MetaMask
+        </button>
+      </div>
+    </nav>
+    <div class="uk-container">
+      <p id="status" class="uk-text-center uk-text-danger"></p>
 
-    <div>
+      <div class="uk-section">
         <h2>Upload File</h2>
-        <input type="file" id="fileInput">
-        <input type="text" id="encryptedKey" placeholder="Enter encrypted key">
-        <button id="uploadButton">Upload File</button>
-    </div>
-    <div>
+        <div class="js-upload uk-placeholder uk-text-center">
+          <span uk-icon="icon: cloud-upload"></span>
+          <span class="uk-text-middle"
+            >Attach binaries by dropping them here or</span
+          >
+          <div uk-form-custom>
+            <input type="file" multiple />
+            <span class="uk-link">selecting one</span>
+          </div>
+        </div>
+        <progress
+          id="js-progressbar"
+          class="uk-progress"
+          value="0"
+          max="100"
+          hidden></progress>
+        <div class="uk-margin">
+          <input
+            class="uk-input uk-form-width-medium"
+            type="text"
+            id="encryptedKey"
+            placeholder="Enter encrypted key" />
+        </div>
+        <button id="uploadButton" class="uk-button uk-button-primary">
+          Upload File
+        </button>
+      </div>
+
+      <div class="uk-section">
         <h2>Grant Permission</h2>
-        <input type="number" id="grantFileIndex" placeholder="File Index">
-        <input type="text" id="grantUserAddress" placeholder="User Address">
-        <button id="grantPermissionButton">Grant Permission</button>
-        <p id="grantPermissionStatus"></p>
-    </div>
-    <div>
+        <div class="uk-margin">
+          <input
+            class="uk-input uk-form-width-medium"
+            type="number"
+            id="grantFileIndex"
+            placeholder="File Index" />
+        </div>
+        <div class="uk-margin">
+          <input
+            class="uk-input uk-form-width-medium"
+            type="text"
+            id="grantUserAddress"
+            placeholder="User Address" />
+        </div>
+        <button
+          id="grantPermissionButton"
+          class="uk-button uk-button-secondary">
+          Grant Permission
+        </button>
+        <p
+          id="grantPermissionStatus"
+          class="uk-text-center uk-text-success"></p>
+      </div>
+
+      <div class="uk-section">
         <h2>Revoke Permission</h2>
-        <input type="number" id="revokeFileIndex" placeholder="File Index" required>
-        <input type="text" id="revokeUserAddress" placeholder="User Address" required>
-        <button id="revokePermissionButton">Revoke Permission</button>
-        <p id="revokePermissionStatus"></p>
-    </div>
-    <div>
+        <div class="uk-margin">
+          <input
+            class="uk-input uk-form-width-medium"
+            type="number"
+            id="revokeFileIndex"
+            placeholder="File Index"
+            required />
+        </div>
+        <div class="uk-margin">
+          <input
+            class="uk-input uk-form-width-medium"
+            type="text"
+            id="revokeUserAddress"
+            placeholder="User Address"
+            required />
+        </div>
+        <button id="revokePermissionButton" class="uk-button uk-button-danger">
+          Revoke Permission
+        </button>
+        <p
+          id="revokePermissionStatus"
+          class="uk-text-center uk-text-danger"></p>
+      </div>
+
+      <div class="uk-section">
         <h2>Your Uploaded Files</h2>
-        <table id="filesTable" border="1">
-            <thead>
-                <tr>
-                    <th>Index</th>
-                    <th>IPFS Hash</th>
-                    <th>Encrypted Key</th>
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
+        <table
+          class="uk-table uk-table-divider uk-table-striped uk-table-hover"
+          id="filesTable">
+          <thead>
+            <tr>
+              <th>Index</th>
+              <th>IPFS Hash</th>
+              <th>Encrypted Key</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
         </table>
-    </div>
-    <div>
+      </div>
+
+      <div class="uk-section">
         <h2>Shared with me</h2>
-        <table id="usersSharedFilesTable" border="1">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Hash</th>
-                    <th>Owner</th>
-                    <th>Shared With</th>
-                    <th>Encrypted Key</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
+        <table
+          class="uk-table uk-table-divider uk-table-striped uk-table-hover"
+          id="usersSharedFilesTable">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Hash</th>
+              <th>Owner</th>
+              <th>Shared With</th>
+              <th>Encrypted Key</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
         </table>
-    </div>
-    <div>
+      </div>
+
+      <div class="uk-section uk-hidden">
         <h2>My sharing list</h2>
-        <table id="sharingListTable" border="1">
-            <thead>
-                <tr>
-                    <th>Index</th>
-                    <th>Hash</th>
-                    <th>Owner</th>
-                    <th>Shared With</th>
-                    <th>Encrypted Key</th>
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
+        <table
+          class="uk-table uk-table-divider uk-table-striped uk-table-hover"
+          id="sharingListTable">
+          <thead>
+            <tr>
+              <th>Index</th>
+              <th>Hash</th>
+              <th>Owner</th>
+              <th>Shared With</th>
+              <th>Encrypted Key</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
         </table>
+      </div>
     </div>
-</body>
+    <script>
+      var bar = document.getElementById("js-progressbar");
+
+      UIkit.upload(".js-upload", {
+        url: "",
+        multiple: true,
+        beforeSend: function () {
+          console.log("beforeSend", arguments);
+        },
+        beforeAll: function () {
+          console.log("beforeAll", arguments);
+        },
+        load: function () {
+          console.log("load", arguments);
+        },
+        error: function () {
+          console.log("error", arguments);
+        },
+        complete: function () {
+          console.log("complete", arguments);
+        },
+        loadStart: function (e) {
+          console.log("loadStart", arguments);
+          bar.removeAttribute("hidden");
+          bar.max = e.total;
+          bar.value = e.loaded;
+        },
+        progress: function (e) {
+          console.log("progress", arguments);
+          bar.max = e.total;
+          bar.value = e.loaded;
+        },
+        loadEnd: function (e) {
+          console.log("loadEnd", arguments);
+          bar.max = e.total;
+          bar.value = e.loaded;
+        },
+        completeAll: function () {
+          console.log("completeAll", arguments);
+          setTimeout(function () {
+            bar.setAttribute("hidden", "hidden");
+          }, 1000);
+          alert("Upload Completed");
+        },
+      });
+    </script>
+  </body>
 </html>

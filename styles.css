@@ -1,0 +1,56 @@
+body {
+    background-color: #0a25b1;
+    font-family: Arial, sans-serif;
+}
+
+.uk-navbar-container {
+    background-color: #051463 !important;
+}
+
+.uk-navbar-item.uk-logo {
+    color: #ffffff;
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+#connectButton {
+    background-color: #ff9900;
+    border-color: #ff9900;
+    color: white;
+    border-radius: 8px;
+}
+
+#connectButton:hover {
+    background-color: #e68a00;
+    border-color: #e68a00;
+}
+
+.uk-button {
+    border-radius: 8px !important;
+}
+
+.uk-section {
+    background-color: #ffffff;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.uk-section h2 {
+    margin-bottom: 20px;
+}
+
+.uk-input,
+.uk-button {
+    margin-bottom: 10px;
+}
+
+#status {
+    margin-top: 10px;
+}
+
+#grantPermissionStatus,
+#revokePermissionStatus {
+    margin-top: 10px;
+}
