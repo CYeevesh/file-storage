@@ -455,36 +455,36 @@ async function fetchSharedFiles() {
 
 // Grant permission to another user to access a file
 async function grantPermission() {
-    const fileIndex = document.getElementById('fileIndex').value;
-    const userAddress = document.getElementById('userAddress').value;
-    const permissionStatus = document.getElementById('permissionStatus');
+    const fileIndex = document.getElementById('grantFileIndex').value;
+    const userAddress = document.getElementById('grantUserAddress').value;
+    const grantPermissionStatus = document.getElementById('grantPermissionStatus');
 
     if (!fileIndex || !userAddress) {
-        permissionStatus.textContent = 'Please provide both file index and user address.';
+        grantPermissionStatus.textContent = 'Please provide both file index and user address.';
         return;
     }
 
     try {
-        permissionStatus.textContent = 'Granting permission...';
+        grantPermissionStatus.textContent = 'Granting permission...';
 
         if (contract.methods.grantPermission) {
             await contract.methods.grantPermission(fileIndex, userAddress).send({ from: account });
-            permissionStatus.textContent = 'Permission granted successfully!';
+            grantPermissionStatus.textContent = 'Permission granted successfully!';
         } else {
             console.error('grantPermission method not found in contract');
-            permissionStatus.textContent = 'grantPermission method not found in contract';
+            grantPermissionStatus.textContent = 'grantPermission method not found in contract';
         }
     } catch (error) {
         console.error(error);
-        permissionStatus.textContent = 'An error occurred. Check console for details.';
+        grantPermissionStatus.textContent = 'An error occurred. Check console for details.';
     }
 }
 
 // Revoke permission of another user to access a file
 async function revokePermission() {
-    const fileIndex = document.getElementById('fileIndex').value;
-    const userAddress = document.getElementById('userAddress').value;
-    const permissionStatus = document.getElementById('permissionStatus');
+    const fileIndex = document.getElementById('revokeFileIndex').value;
+    const userAddress = document.getElementById('revokeUserAddress').value;
+    const revokePermissionStatus = document.getElementById('revokePermissionStatus');
 
     if (!fileIndex || !userAddress) {
         revokePermissionStatus.textContent = 'Please provide both file index and user address.';
