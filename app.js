@@ -1,5 +1,5 @@
 // Your contract ABI and address
-const contractABI = [
+        const contractABI = [
 	{
 		"anonymous": false,
 		"inputs": [
@@ -169,7 +169,7 @@ const contractABI = [
 		"inputs": [
 			{
 				"internalType": "address",
-				"name": "user",
+				"name": "_user",
 				"type": "address"
 			}
 		],
@@ -194,6 +194,41 @@ const contractABI = [
 					}
 				],
 				"internalType": "struct DecentralizedFileStorage.FileInfo[]",
+				"name": "",
+				"type": "tuple[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getAllUsersWithSharedFiles",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "string",
+						"name": "hash",
+						"type": "string"
+					},
+					{
+						"internalType": "address",
+						"name": "owner",
+						"type": "address"
+					},
+					{
+						"internalType": "string",
+						"name": "encryptedKey",
+						"type": "string"
+					},
+					{
+						"internalType": "address",
+						"name": "sharedWith",
+						"type": "address"
+					}
+				],
+				"internalType": "struct DecentralizedFileStorage.SharedFileInfo[]",
 				"name": "",
 				"type": "tuple[]"
 			}
@@ -261,8 +296,9 @@ const contractABI = [
 	}
 ];
 
-const contractAddress = '0x29eB9bF346eE5c0e8D43a5eC111caC59A98B62CC';
+        const contractAddress = '0x9326A57a0291A6340Af14D9d997B952F1e209b4D';
 
+        
 // Web3 setup
 let web3;
 let contract;
@@ -276,15 +312,16 @@ async function connectWeb3() {
             account = (await web3.eth.getAccounts())[0];
             contract = new web3.eth.Contract(contractABI, contractAddress);
             console.log('Contract initialized:', contract);
-            
+
             const networkId = await web3.eth.net.getId();
             console.log(`Connected Network ID: ${networkId}`);
+
             // Verify if the network is Sepolia Testnet
-            if (networkId !== 11155111) {
+            if (parseInt(networkId, 10) !== 11155111) {
                 alert('Please connect to the Sepolia Testnet');
                 console.log('Currently connected to Network ID:', networkId);
             } else {
-                // Fetch and display uploaded files
+                // Fetch and display uploaded and shared files
                 console.log('Fetching uploaded files...');
                 await fetchUploadedFiles();
             }
@@ -355,8 +392,8 @@ async function fetchUploadedFiles() {
     filesTableBody.innerHTML = ''; // Clear previous entries
 
     try {
-        console.log('Calling getSharedFiles with account:', account);
-        const files = await contract.methods.getSharedFiles(account).call();
+        console.log('Calling getAllUserFiles with account:', account);
+        const files = await contract.methods.getAllUserFiles(account).call();
         console.log('Fetched files:', files);
 
         if (files.length === 0) {
