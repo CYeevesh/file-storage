@@ -321,9 +321,12 @@ async function connectWeb3() {
                 alert('Please connect to the Sepolia Testnet');
                 console.log('Currently connected to Network ID:', networkId);
             } else {
-                // Fetch and display uploaded and shared files
+                // Fetch and display uploaded files
                 console.log('Fetching uploaded files...');
                 await fetchUploadedFiles();
+		// Fetch and display shared files
+                console.log('Fetching all files shared...');
+                await fetchSharedFiles();
             }
         } catch (error) {
             console.error('User denied account access or there is an error', error);
@@ -413,6 +416,33 @@ async function fetchUploadedFiles() {
         });
     } catch (error) {
         console.error('Error fetching uploaded files:', error);
+    }
+}
+
+// Fetch and display shared files
+async function fetchSharedFiles() {
+    try {
+        const files = await contract.methods.getAllSharedFiles(account).call();
+        const sharedFilesTable = document.getElementById('usersSharedFilesTable').getElementsByTagName('tbody')[0];
+
+        sharedFilesTable.innerHTML = '';
+
+        files.forEach((file, index) => {
+            const row = sharedFilesTable.insertRow();
+            const indexCell = row.insertCell(0);
+            const hashCell = row.insertCell(1);
+            const ownerCell = row.insertCell(2);
+            const sharedWithCell = row.insertCell(3);
+            const encryptedKeyCell = row.insertCell(4);
+
+            indexCell.textContent = index + 1;
+            hashCell.textContent = file.hash;
+            ownerCell.textContent = file.owner;
+            sharedWithCell.textContent = file.sharedWith;
+            encryptedKeyCell.textContent = file.encryptedKey;
+        });
+    } catch (error) {
+        console.error('Error fetching shared files:', error);
     }
 }
 
