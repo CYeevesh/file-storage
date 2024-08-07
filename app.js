@@ -462,8 +462,8 @@ async function sharedFilesList() {
     sharingListTableBody.innerHTML = ''; // Clear previous entries
 
     try {
-        console.log('Calling getAllSharedFiles with account:', account);
-        const files = await contract.methods.getAllUsersWithSharedFiles(account).call();
+        console.log('Calling getAllUsersWithSharedFiles with account:', account);
+        const files = await contract.methods.getAllUsersWithSharedFiles().call();
         console.log('Fetched shared files:', files);
 
         if (files.length === 0) {
