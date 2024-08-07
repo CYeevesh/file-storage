@@ -325,8 +325,11 @@ async function connectWeb3() {
                 console.log('Fetching uploaded files...');
                 await fetchUploadedFiles();
                 // Fetch and display shared files
-                console.log('Fetching all files shared...');
+                console.log('Fetching all files shared to user...');
                 await fetchSharedFiles();
+		// Fetch and display shared files
+                console.log('Fetching all files shared by user...');
+		await sharedFilesList();
             }
         } catch (error) {
             console.error('User denied account access or there is an error', error);
@@ -455,12 +458,12 @@ async function fetchSharedFiles() {
 
 // Fetch and display files shared by user
 async function sharedFilesList() {
-    const sharedFilesTableBody = document.getElementById('sharedFilesTable').getElementsByTagName('tbody')[0];
-    sharedFilesTableBody.innerHTML = ''; // Clear previous entries
+    const sharedFilesTableBody = document.getElementById('sharingListTable').getElementsByTagName('tbody')[0];
+    sharingListTableBody.innerHTML = ''; // Clear previous entries
 
     try {
         console.log('Calling getAllSharedFiles with account:', account);
-        const files = await contract.methods.getAllSharedFiles(account).call();
+        const files = await contract.methods.getAllUsersWithSharedFiles(account).call();
         console.log('Fetched shared files:', files);
 
         if (files.length === 0) {
@@ -468,7 +471,7 @@ async function sharedFilesList() {
         }
 
         files.forEach((file, index) => {
-            const row = sharedFilesTableBody.insertRow();
+            const row = sharingListTableBody.insertRow();
 
             const cellIndex = row.insertCell(0);
             const cellHash = row.insertCell(1);
