@@ -484,6 +484,7 @@ async function fetchSharedFiles() {
             }
         }
 
+
 // Fetch and display files shared by user
 async function sharedFilesList() {
     const sharingListTableBody = document.getElementById('sharingListTable').getElementsByTagName('tbody')[0];
