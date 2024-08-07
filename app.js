@@ -480,9 +480,37 @@ async function grantPermission() {
     }
 }
 
+// Revoke permission of another user to access a file
+async function revokePermission() {
+    const fileIndex = document.getElementById('fileIndex').value;
+    const userAddress = document.getElementById('userAddress').value;
+    const permissionStatus = document.getElementById('permissionStatus');
+
+    if (!fileIndex || !userAddress) {
+        revokePermissionStatus.textContent = 'Please provide both file index and user address.';
+        return;
+    }
+
+    try {
+        revokePermissionStatus.textContent = 'Revoking permission...';
+
+        if (contract.methods.revokePermission) {
+            await contract.methods.revokePermission(fileIndex, userAddress).send({ from: account });
+            revokePermissionStatus.textContent = 'Permission revoked successfully!';
+        } else {
+            console.error('revokePermission method not found in contract');
+            revokePermissionStatus.textContent = 'revokePermission method not found in contract';
+        }
+    } catch (error) {
+        console.error(error);
+        revokePermissionStatus.textContent = 'An error occurred. Check console for details.';
+    }
+}
+
 // Initialize web3 and attach the event listener
 window.onload = async function () {
     document.getElementById('connectButton').onclick = connectWeb3;
     document.getElementById('uploadButton').onclick = uploadFile;
     document.getElementById('grantPermissionButton').onclick = grantPermission;
+    document.getElementById('revokePermissionButton').onclick = revokePermission;
 };
