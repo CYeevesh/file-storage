@@ -419,7 +419,7 @@ async function fetchUploadedFiles() {
     }
 }
 
-// Fetch and display shared files
+// Fetch and display files shared to user
 async function fetchSharedFiles() {
     const sharedFilesTableBody = document.getElementById('usersSharedFilesTable').getElementsByTagName('tbody')[0];
     sharedFilesTableBody.innerHTML = ''; // Clear previous entries
@@ -452,6 +452,41 @@ async function fetchSharedFiles() {
         console.error('Error fetching shared files:', error);
     }
 }
+
+// Fetch and display files shared by user
+async function sharedFilesList() {
+    const sharedFilesTableBody = document.getElementById('sharedFilesTable').getElementsByTagName('tbody')[0];
+    sharedFilesTableBody.innerHTML = ''; // Clear previous entries
+
+    try {
+        console.log('Calling getAllSharedFiles with account:', account);
+        const files = await contract.methods.getAllSharedFiles(account).call();
+        console.log('Fetched shared files:', files);
+
+        if (files.length === 0) {
+            console.log('No shared files found for this user.');
+        }
+
+        files.forEach((file, index) => {
+            const row = sharedFilesTableBody.insertRow();
+
+            const cellIndex = row.insertCell(0);
+            const cellHash = row.insertCell(1);
+            const cellOwner = row.insertCell(2);
+            const cellSharedWith = row.insertCell(3);
+            const cellKey = row.insertCell(4);
+
+            cellIndex.textContent = index + 1;
+            cellHash.textContent = file.hash;
+            cellOwner.textContent = file.owner;
+            cellSharedWith.textContent = file.sharedWith;
+            cellKey.textContent = file.encryptedKey;
+        });
+    } catch (error) {
+        console.error('Error fetching shared files:', error);
+    }
+}
+
 
 // Grant permission to another user to access a file
 async function grantPermission() {
